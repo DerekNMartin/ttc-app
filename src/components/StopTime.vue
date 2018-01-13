@@ -1,11 +1,16 @@
 <template>
   <div class="hello">
-    <h1>King St. West At Jefferson Ave.</h1>
-    <h2>{{ routes[0].routeTitle }}</h2>
-    Next Arrival in {{ routes[0].times[0] }} minutes and {{ routes[0].times[1] }} minutes
-    <h2>{{ routes[1].routeTitle }}</h2>
-    Next Arrival in {{ routes[1].times[0] }} minutes and {{ routes[1].times[1] }} minutes
-  </div>
+    <template v-if="routes.length > 0">
+      <h1>King St. West At Jefferson Ave.</h1>
+      <h2>{{ routes[0].routeTitle }}</h2>
+      Next Arrival in {{ routes[0].times[0] }} minutes and {{ routes[0].times[1] }} minutes
+      <h2>{{ routes[1].routeTitle }}</h2>
+      Next Arrival in {{ routes[1].times[0] }} minutes and {{ routes[1].times[1] }} minutes  
+    </template>
+    <template v-else>
+      No Data
+    </template>
+    </div>
 </template>
 
 <script>
@@ -51,7 +56,7 @@ export default {
               times: _times
         })
       })
-      console.log(this.route)
+      console.log(this.routes)
     },
     getNextTimes(times) {
       let _nextTimes = []
