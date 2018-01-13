@@ -1,11 +1,12 @@
 <template>
   <div class="hello">
+    <h1>King St. West At Jefferson Ave.</h1>
+    <h2>Last Updated: {{ getCurrentTime() }}</h2>
     <template v-if="routes.length > 0">
-      <h1>King St. West At Jefferson Ave.</h1>
       <h2>{{ routes[0].routeTitle }}</h2>
-      Next Arrival in {{ routes[0].times[0] }} minutes and {{ routes[0].times[1] }} minutes
+      Next Arrival in <span class="highlight">{{ routes[0].times[0] }} minutes</span> and {{ routes[0].times[1] }} minutes
       <h2>{{ routes[1].routeTitle }}</h2>
-      Next Arrival in {{ routes[1].times[0] }} minutes and {{ routes[1].times[1] }} minutes  
+      Next Arrival in <span class="highlight">{{ routes[1].times[0] }} minutes</span> and {{ routes[1].times[1] }} minutes  
     </template>
     <template v-else>
       No Data
@@ -33,6 +34,7 @@ export default {
       return JSON.parse(_result).body.predictions
     },
     getStopData() {
+      this.getCurrentTime()
       let _self = this 
       axios.get(TTC_ROUTE)
       .then(function (response) {
@@ -65,10 +67,29 @@ export default {
       })
       return _nextTimes
     },
+    getCurrentTime() {
+      let _now = new Date(Date.now())
+      let _minute = _now.getMinutes()
+      let _hour = _now.getHours()
+      let _amPM = (_hour > 11) ? 'pm' : 'am'
+      if (_hour > 12) {
+        _hour -= 12
+      } else if (_hour == 0) {
+        _hour = '12'
+      }
+      if (_minute < 10) {
+        _minute = `0${_minute}`
+      }
+      let _time = `${_hour}:${_minute}${_amPM}`
+      return _time
+    }
   },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.highlight {
+  color: red
+}
 </style>
